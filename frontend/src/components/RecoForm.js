@@ -95,9 +95,7 @@ export default function RecoForm({ initialChurnScore, initialSentimentScore }) {
   color: "rgba(255,255,255,0.8)",
   fontFamily: "JetBrains Mono, monospace"
 }}>
-  hybrid = 0.5 × churn + 0.3 × (1 - sentiment)
-  <br />
-  <b>Preview: {hybridPreview}</b>
+  hybrid = churn × 0.5 + (1 - sentiment) × 0.3
 </div>
 
         {/* Ajustement manuel si pas de score auto */}
