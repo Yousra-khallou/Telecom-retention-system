@@ -50,7 +50,7 @@ export default function RecoForm({ initialChurnScore }) {
           📋 Step 3 of 3 — Get personalized retention offers
           {initialChurnScore !== null && initialChurnScore !== undefined && (
             <span style={{ marginLeft: 8, color: "#a855f7" }}>
-              · Churn score auto-filled from Step 1 ✓
+              · Churn score auto-filled from Step 1
             </span>
           )}
         </div>
@@ -135,7 +135,7 @@ export default function RecoForm({ initialChurnScore }) {
                 <div className="stat-key">Churn Score</div>
               </div>
               <div className="stat">
-                <div className="stat-val" style={{ background: "linear-gradient(135deg,#e8b4b8,#c9a9c4)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+                <div className="stat-val" style={{ background: "linear-gradient(135deg,#88a2ff,#ab9dff)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
                   {result.recommendations.length}
                 </div>
                 <div className="stat-key">Offers</div>
