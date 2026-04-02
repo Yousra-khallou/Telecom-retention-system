@@ -86,15 +86,19 @@ export default function RecoForm({ initialChurnScore, initialSentimentScore }) {
         </div>
 
         {/* Formule hybride */}
-         <div style={
-           { background: "rgba(124,58,237,0.08)", border: "1px solid rgba(124,58,237,0.2)", borderRadius: 10, padding: "12px 16px", fontSize: "0.78rem", color: "rgba(255,255,255,0.8)", fontFamily: "JetBrains Mono, monospace" }}>
-         </div>
-        <div className="field">
-          <label>Customer ID</label>
-          <input type="number" min={0} max={7042} value={customerId}
-            onChange={e => setCustomerId(+e.target.value)} />
-          <div className="field-hint">Customer index (0 – 7042)</div>
-        </div>
+         <div style={{
+  background: "rgba(124,58,237,0.08)",
+  border: "1px solid rgba(124,58,237,0.2)",
+  borderRadius: 10,
+  padding: "12px 16px",
+  fontSize: "0.78rem",
+  color: "rgba(255,255,255,0.8)",
+  fontFamily: "JetBrains Mono, monospace"
+}}>
+  hybrid = 0.5 × churn + 0.3 × (1 - sentiment)
+  <br />
+  <b>Preview: {hybridPreview}</b>
+</div>
 
         {/* Ajustement manuel si pas de score auto */}
         {initialChurnScore == null && (
