@@ -11,12 +11,12 @@ const EXAMPLES = [
 ];
 
 const CFG = {
-  Negative: { color: "#ef4444", bg: "rgba(239,68,68,0.15)",  bar: "linear-gradient(90deg,#ef4444,#f87171)", icon: "😠" },
-  Neutral:  { color: "#f59e0b", bg: "rgba(245,158,11,0.15)", bar: "linear-gradient(90deg,#f59e0b,#fcd34d)", icon: "😐" },
-  Positive: { color: "#22c55e", bg: "rgba(34,197,94,0.15)",  bar: "linear-gradient(90deg,#22c55e,#4ade80)", icon: "😊" },
+  Negative: { color: "#ef4444", bg: "rgba(239,68,68,0.15)",  bar: "linear-gradient(90deg,#ef4444,#f87171)", icon: "😠", score: 0.1 },
+  Neutral:  { color: "#f59e0b", bg: "rgba(245,158,11,0.15)", bar: "linear-gradient(90deg,#f59e0b,#fcd34d)", icon: "😐", score: 0.5 },
+  Positive: { color: "#22c55e", bg: "rgba(34,197,94,0.15)",  bar: "linear-gradient(90deg,#22c55e,#4ade80)", icon: "😊", score: 0.9 },
 };
 
-export default function SentimentForm({ onNext }) {
+export default function SentimentForm({ onNext, onSentimentScore }) {
   const [text, setText]       = useState("");
   const [result, setResult]   = useState(null);
   const [loading, setLoading] = useState(false);
@@ -29,13 +29,17 @@ export default function SentimentForm({ onNext }) {
       const res = await fetch(`${API}/predict/sentiment`, {
         method: "POST",
         headers: {
-        "Content-Type": "application/json",
-        "x-api-key": process.env.REACT_APP_API_KEY
-         },
+          "Content-Type": "application/json",
+          "x-api-key": process.env.REACT_APP_API_KEY
+        },
         body: JSON.stringify({ text }),
       });
       if (!res.ok) throw new Error(`API error: ${res.status}`);
-      setResult(await res.json());
+      const data = await res.json();
+      setResult(data);
+      // Transmet le score numérique à App.js
+      const cfg = CFG[data.sentiment];
+      onSentimentScore && onSentimentScore(cfg ? cfg.score : 0.5);
     } catch (e) { setError(e.message); }
     finally { setLoading(false); }
   };
@@ -46,7 +50,9 @@ export default function SentimentForm({ onNext }) {
     <div className="card-grid">
       <div className="card">
         <div className="card-title">💬 Customer Review</div>
-        <div className="step-indicator">📋 Step 2 of 3 — Analyze the sentiment of a customer review</div>
+        <div className="step-indicator">
+          📋 Step 2 of 3 — Analyze the sentiment · Score will be sent to Step 3
+        </div>
         <div className="examples-label">Quick examples :</div>
         <div className="examples">
           {EXAMPLES.map((ex, i) => (
@@ -103,6 +109,10 @@ export default function SentimentForm({ onNext }) {
             <div className="reviewed-text">
               <div className="reviewed-label">Analyzed text</div>
               <div className="reviewed-content">"{result.text}"</div>
+            </div>
+            {/* Indicateur de transmission */}
+            <div className="step-indicator" style={{ background: "rgba(34,197,94,0.1)", borderColor: "rgba(34,197,94,0.3)", color: "#22c55e" }}>
+              ✅ Sentiment score transmitted to Step 3 — Score: {cfg.score}
             </div>
             <button className="btn-next" onClick={onNext}>
               Next: Get Recommendations 🎯 →
