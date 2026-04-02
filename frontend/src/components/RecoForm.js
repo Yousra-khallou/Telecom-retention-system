@@ -95,7 +95,7 @@ export default function RecoForm({ initialChurnScore, initialSentimentScore }) {
            color: "rgba(255,255,255,0.85)", // AVANT: 0.6 → maintenant lisible
            fontFamily: "JetBrains Mono, monospace"
         }}>
-
+        </div>
         <div className="field">
           <label>Customer ID</label>
           <input type="number" min={0} max={7042} value={customerId}
@@ -126,7 +126,7 @@ export default function RecoForm({ initialChurnScore, initialSentimentScore }) {
         </button>
         {error && <div className="error-box">❌ {error}</div>}
       </div>
-
+      
       <div className="card result-card">
         <div className="card-title">🎁 Personalized Offers</div>
         {!result && !loading && (
