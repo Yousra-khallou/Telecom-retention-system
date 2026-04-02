@@ -4,57 +4,69 @@ import SentimentForm from "./components/SentimentForm";
 import RecoForm from "./components/RecoForm";
 import "./App.css";
 
-const TABS = [
-  { id: "churn",     label: "Churn Prediction",   icon: "⚡" },
-  { id: "sentiment", label: "Sentiment Analysis",  icon: "💬" },
-  { id: "reco",      label: "Recommendations",     icon: "🎯" },
+const STEPS = [
+  { id: "churn",     label: "Churn",      icon: "⚡", desc: "Predict risk" },
+  { id: "sentiment", label: "Sentiment",  icon: "💬", desc: "Analyze review" },
+  { id: "reco",      label: "Recommend",  icon: "🎯", desc: "Get offers" },
 ];
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState("churn");
+  const [step, setStep] = useState(0);
+  const [key, setKey]   = useState(0);
+  const [churnScore, setChurnScore] = useState(null);
+
+  const goTo = (i) => { setStep(i); setKey(k => k + 1); };
+  const next  = ()  => goTo(Math.min(step + 1, STEPS.length - 1));
 
   return (
     <div className="app">
+      <div className="bg-mesh" />
       <div className="bg-grid" />
-      <div className="bg-glow" />
 
       <header className="header">
-        <div className="header-inner">
-          <div className="logo">
-            <span className="logo-icon">📡</span>
-            <div>
-              <div className="logo-title">TeleRetain</div>
-              <div className="logo-sub">AI Retention Dashboard</div>
-            </div>
+        <div className="logo">
+          <div className="logo-icon">📡</div>
+          <div>
+            <div className="logo-title">TeleRetain</div>
+            <div className="logo-sub">AI Retention System</div>
           </div>
-          <div className="status-bar">
-            <span className="status-dot" />
-            <span className="status-text">2 APIs Online</span>
-          </div>
+        </div>
+        <div className="status-pill">
+          <span className="status-dot" />
+          2 APIs Online
         </div>
       </header>
 
-      <nav className="tabs">
-        {TABS.map(t => (
-          <button
-            key={t.id}
-            className={`tab-btn ${activeTab === t.id ? "active" : ""}`}
-            onClick={() => setActiveTab(t.id)}
-          >
-            <span>{t.icon}</span>
-            <span>{t.label}</span>
-          </button>
+      {/* Step navigation */}
+      <nav className="step-nav">
+        {STEPS.map((s, i) => (
+          <div key={s.id} className="step-item">
+            <button
+              className={`step-btn ${step === i ? "active" : ""} ${step > i ? "done" : ""}`}
+              onClick={() => goTo(i)}
+            >
+              <div className="step-circle">
+                {step > i ? "✓" : s.icon}
+              </div>
+              <span className="step-label">{s.label}</span>
+            </button>
+            {i < STEPS.length - 1 && (
+              <div className={`step-connector ${step > i ? "done" : ""}`} />
+            )}
+          </div>
         ))}
       </nav>
 
       <main className="main">
-        {activeTab === "churn"     && <ChurnForm />}
-        {activeTab === "sentiment" && <SentimentForm />}
-        {activeTab === "reco"      && <RecoForm />}
+        <div key={key} className="page-enter">
+          {step === 0 && <ChurnForm onNext={next} onChurnScore={setChurnScore} />}
+          {step === 1 && <SentimentForm onNext={next} />}
+          {step === 2 && <RecoForm initialChurnScore={churnScore} />}
+        </div>
       </main>
 
       <footer className="footer">
-        Powered by HuggingFace Spaces · Telecom Retention System
+        Powered by HuggingFace Spaces · TeleRetain Dashboard
       </footer>
     </div>
   );

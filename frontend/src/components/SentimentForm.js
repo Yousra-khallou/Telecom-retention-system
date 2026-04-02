@@ -10,23 +10,21 @@ const EXAMPLES = [
   "Great network speed and the staff was very helpful!",
 ];
 
-const SENTIMENT_CONFIG = {
-  Negative: { color: "#ef4444", bg: "#450a0a", icon: "😠", bar: "#ef4444" },
-  Neutral:  { color: "#f59e0b", bg: "#451a03", icon: "😐", bar: "#f59e0b" },
-  Positive: { color: "#22c55e", bg: "#052e16", icon: "😊", bar: "#22c55e" },
+const CFG = {
+  Negative: { color: "#ef4444", bg: "rgba(239,68,68,0.15)",  bar: "linear-gradient(90deg,#ef4444,#f87171)", icon: "😠" },
+  Neutral:  { color: "#f59e0b", bg: "rgba(245,158,11,0.15)", bar: "linear-gradient(90deg,#f59e0b,#fcd34d)", icon: "😐" },
+  Positive: { color: "#22c55e", bg: "rgba(34,197,94,0.15)",  bar: "linear-gradient(90deg,#22c55e,#4ade80)", icon: "😊" },
 };
 
-export default function SentimentForm() {
-  const [text, setText]     = useState("");
-  const [result, setResult] = useState(null);
+export default function SentimentForm({ onNext }) {
+  const [text, setText]       = useState("");
+  const [result, setResult]   = useState(null);
   const [loading, setLoading] = useState(false);
-  const [error, setError]   = useState(null);
+  const [error, setError]     = useState(null);
 
   const analyze = async () => {
     if (!text.trim()) return;
-    setLoading(true);
-    setError(null);
-    setResult(null);
+    setLoading(true); setError(null); setResult(null);
     try {
       const res = await fetch(`${API}/predict/sentiment`, {
         method: "POST",
@@ -35,64 +33,47 @@ export default function SentimentForm() {
       });
       if (!res.ok) throw new Error(`API error: ${res.status}`);
       setResult(await res.json());
-    } catch (e) {
-      setError(e.message);
-    } finally {
-      setLoading(false);
-    }
+    } catch (e) { setError(e.message); }
+    finally { setLoading(false); }
   };
 
-  const cfg = result ? SENTIMENT_CONFIG[result.sentiment] : null;
+  const cfg = result ? CFG[result.sentiment] : null;
 
   return (
     <div className="card-grid">
       <div className="card">
         <div className="card-title">💬 Customer Review</div>
-
-        {/* Examples */}
+        <div className="step-indicator">📋 Step 2 of 3 — Analyze the sentiment of a customer review</div>
         <div className="examples-label">Quick examples :</div>
         <div className="examples">
           {EXAMPLES.map((ex, i) => (
             <button key={i} className="example-chip" onClick={() => setText(ex)}>
-              {ex.slice(0, 45)}…
+              {ex.slice(0, 42)}…
             </button>
           ))}
         </div>
-
-        <textarea
-          className="textarea"
-          rows={5}
+        <textarea className="textarea" rows={5}
           placeholder="Type a customer review in French or English..."
-          value={text}
-          onChange={e => setText(e.target.value)}
-        />
+          value={text} onChange={e => setText(e.target.value)} />
         <div className="char-count">{text.length} characters</div>
-
         <button className="btn-primary" onClick={analyze} disabled={loading || !text.trim()}>
           {loading ? <><span className="spinner" /> Analyzing...</> : "Analyze Sentiment →"}
         </button>
         {error && <div className="error-box">❌ {error}</div>}
       </div>
 
-      {/* Result */}
       <div className="card result-card">
         <div className="card-title">📊 Sentiment Result</div>
         {!result && !loading && (
           <div className="empty-state">
             <div className="empty-icon">💬</div>
             <p>Type a review and click <b>Analyze Sentiment</b></p>
-            <p className="empty-sub">Supports English and French 🇬🇧 🇫🇷</p>
+            <p className="empty-sub">Supports English 🇬🇧 and French 🇫🇷</p>
           </div>
         )}
-        {loading && (
-          <div className="empty-state">
-            <div className="loading-ring" />
-            <p>DistilBERT is processing...</p>
-          </div>
-        )}
+        {loading && <div className="empty-state"><div className="loading-ring" /><p>DistilBERT is processing...</p></div>}
         {result && cfg && (
           <div className="result-inner">
-            {/* Big emoji */}
             <div className="sentiment-emoji">{cfg.icon}</div>
             <div className="risk-badge" style={{ background: cfg.bg, borderColor: cfg.color, color: cfg.color }}>
               {result.sentiment}
@@ -100,33 +81,29 @@ export default function SentimentForm() {
             <div className="confidence-label">
               Confidence: <b style={{ color: cfg.color }}>{Math.round(result.confidence * 100)}%</b>
             </div>
-
-            {/* Score bars */}
             <div className="score-bars">
               {Object.entries(result.scores).map(([label, score]) => {
-                const c = SENTIMENT_CONFIG[label];
+                const c = CFG[label];
                 return (
                   <div key={label} className="score-bar-row">
                     <div className="score-bar-label">
                       <span>{c?.icon} {label}</span>
-                      <span style={{ color: c?.color }}>{Math.round(score * 100)}%</span>
+                      <span style={{ color: c?.color, fontWeight: 700 }}>{Math.round(score * 100)}%</span>
                     </div>
                     <div className="score-bar-bg">
-                      <div
-                        className="score-bar-fill"
-                        style={{ width: `${score * 100}%`, background: c?.bar }}
-                      />
+                      <div className="score-bar-fill" style={{ width: `${score * 100}%`, background: c?.bar }} />
                     </div>
                   </div>
                 );
               })}
             </div>
-
-            {/* Reviewed text */}
             <div className="reviewed-text">
               <div className="reviewed-label">Analyzed text</div>
               <div className="reviewed-content">"{result.text}"</div>
             </div>
+            <button className="btn-next" onClick={onNext}>
+              Next: Get Recommendations 🎯 →
+            </button>
           </div>
         )}
       </div>
