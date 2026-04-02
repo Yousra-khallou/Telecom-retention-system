@@ -86,7 +86,7 @@ export default function RecoForm({ initialChurnScore, initialSentimentScore }) {
         </div>
 
         {/* Formule hybride */}
-         <div style={{ background: "rgba(124,58,237,0.08)", border: "1px solid rgba(124,58,237,0.2)", borderRadius: 10, padding: "12px 16px", fontSize: "0.78rem", color: "rgba(255,255,255,0.4)", fontFamily: "JetBrains Mono, monospace" }}>
+         <div style={{ background: "rgba(124,58,237,0.08)", border: "1px solid rgba(124,58,237,0.2)", borderRadius: 10, padding: "12px 16px", fontSize: "0.78rem", color: "rgba(255,255,255,0.8)", fontFamily: "JetBrains Mono, monospace" }}>
         </div>
         <div className="field">
           <label>Customer ID</label>
