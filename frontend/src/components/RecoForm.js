@@ -87,15 +87,11 @@ export default function RecoForm({ initialChurnScore, initialSentimentScore }) {
 
         {/* Formule hybride */}
          <div style={{
-           background: "rgba(124,58,237,0.08)",
-           border: "1px solid rgba(124,58,237,0.2)",
-           borderRadius: 10,
-           padding: "12px 16px",
-           fontSize: "0.78rem",
-           color: "rgba(255,255,255,0.8)",
-           fontFamily: "JetBrains Mono, monospace"
-         }}>
-           hybrid = churn × 0.5 + (1 - sentiment) × 0.3
+          background: "rgba(124,58,237,0.08)", border: "1px solid rgba(124,58,237,0.2)",
+          borderRadius: 10, padding: "12px 16px", fontSize: "0.78rem", color: "rgba(255,255,255,0.6)",
+          fontFamily: "JetBrains Mono, monospace"
+        }}>
+          hybrid = churn×0.5 + (1-sentiment)×0.3 + collab×0.2
         </div>
 
         {/* Ajustement manuel si pas de score auto */}
