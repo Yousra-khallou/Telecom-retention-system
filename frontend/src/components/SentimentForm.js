@@ -28,7 +28,10 @@ export default function SentimentForm({ onNext }) {
     try {
       const res = await fetch(`${API}/predict/sentiment`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+        "Content-Type": "application/json",
+        "x-api-key": process.env.REACT_APP_API_KEY
+         },
         body: JSON.stringify({ text }),
       });
       if (!res.ok) throw new Error(`API error: ${res.status}`);

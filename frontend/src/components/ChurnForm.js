@@ -32,7 +32,10 @@ export default function ChurnForm({ onNext, onChurnScore }) {
     try {
       const res = await fetch(`${API}/predict/churn`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+        "Content-Type": "application/json",
+        "x-api-key": process.env.REACT_APP_API_KEY
+         },
         body: JSON.stringify(form),
       });
       if (!res.ok) throw new Error(`API error: ${res.status}`);

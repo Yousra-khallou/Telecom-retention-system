@@ -31,7 +31,10 @@ export default function RecoForm({ initialChurnScore }) {
     try {
       const res = await fetch(`${API}/recommend`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+        "Content-Type": "application/json",
+        "x-api-key": process.env.REACT_APP_API_KEY
+         },
         body: JSON.stringify({ customer_id: customerId, churn_score: churnScore, top_k: 3 }),
       });
       if (!res.ok) throw new Error(`API error: ${res.status}`);
