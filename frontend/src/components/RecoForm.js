@@ -3,22 +3,22 @@ import { useState, useEffect } from "react";
 const API = "https://usraai-telecom-churn-reco.hf.space";
 
 const SERVICE_INFO = {
-  OnlineSecurity:   { icon: "🔒", desc: "Protect against online threats" },
-  TechSupport:      { icon: "🛠️", desc: "24/7 technical assistance" },
-  OnlineBackup:     { icon: "☁️", desc: "Cloud backup for your data" },
+  OnlineSecurity: { icon: "🔒", desc: "Protect against online threats" },
+  TechSupport: { icon: "🛠️", desc: "24/7 technical assistance" },
+  OnlineBackup: { icon: "☁️", desc: "Cloud backup for your data" },
   DeviceProtection: { icon: "📱", desc: "Insurance for your devices" },
-  StreamingTV:      { icon: "📺", desc: "Access to streaming channels" },
-  StreamingMovies:  { icon: "🎬", desc: "On-demand movie library" },
-  MultipleLines:    { icon: "📞", desc: "Add extra phone lines" },
-  PhoneService:     { icon: "☎️", desc: "Basic phone service" },
+  StreamingTV: { icon: "📺", desc: "Access to streaming channels" },
+  StreamingMovies: { icon: "🎬", desc: "On-demand movie library" },
+  MultipleLines: { icon: "📞", desc: "Add extra phone lines" },
+  PhoneService: { icon: "☎️", desc: "Basic phone service" },
 };
 
 export default function RecoForm({ initialChurnScore }) {
   const [customerId, setCustomerId] = useState(10);
   const [churnScore, setChurnScore] = useState(initialChurnScore || 0.75);
-  const [result, setResult]         = useState(null);
-  const [loading, setLoading]       = useState(false);
-  const [error, setError]           = useState(null);
+  const [result, setResult] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     if (initialChurnScore !== null && initialChurnScore !== undefined) {
@@ -82,8 +82,8 @@ export default function RecoForm({ initialChurnScore }) {
           </div>
           <div style={{ color: rc, fontWeight: 700, marginTop: 8, fontSize: "0.85rem" }}>
             {churnScore > 0.7 ? "🔴 High risk — immediate action needed"
-             : churnScore > 0.4 ? "🟡 Medium risk — consider proactive offers"
-             : "🟢 Low risk — standard follow-up"}
+              : churnScore > 0.4 ? "🟡 Medium risk — consider proactive offers"
+                : "🟢 Low risk — standard follow-up"}
           </div>
         </div>
 
@@ -135,7 +135,7 @@ export default function RecoForm({ initialChurnScore }) {
                 <div className="stat-key">Churn Score</div>
               </div>
               <div className="stat">
-                <div className="stat-val" style={{ background: "linear-gradient(135deg,#7c3aed,#ec4899)", WebkitBackgroundClip:"text", WebkitTextFillColor:"transparent" }}>
+                <div className="stat-val" style={{ background: "linear-gradient(135deg,#e8b4b8,#c9a9c4)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
                   {result.recommendations.length}
                 </div>
                 <div className="stat-key">Offers</div>
