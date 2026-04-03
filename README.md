@@ -27,17 +27,17 @@ Churn + Sentiment      → 🎯 Hybrid Recommendations (What to offer them?)
 
 ```
 ┌─────────────────────────────────────────────────────────┐
-│                    React Dashboard                       │
-│              (Vercel — telecom-retention.vercel.app)     │
+│                    React Dashboard                      │
+│              (Vercel — telecom-retention.vercel.app)    │
 └──────────────────┬──────────────────┬───────────────────┘
                    │                  │
         ┌──────────▼───────┐ ┌────────▼────────────┐
-        │  Churn + Reco API │ │   Sentiment API      │
-        │  HuggingFace Space│ │   HuggingFace Space  │
-        │                   │ │                      │
-        │  XGBoost + SVD    │ │  DistilBERT          │
-        │  (scikit-learn)   │ │  (multilingual)      │
-        └───────────────────┘ └──────────────────────┘
+        │  Churn + Reco API│ │   Sentiment API     │
+        │ HuggingFace Space│ │   HuggingFace Space │
+        │                  │ │                     │
+        │  XGBoost + SVD   │ │  DistilBERT         │
+        │  (scikit-learn)  │ │  (multilingual)     │
+        └──────────────────┘ └───────────────-─────┘
 ```
 
 ---
